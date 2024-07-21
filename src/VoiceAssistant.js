@@ -21,7 +21,8 @@ const VoiceAssistant = () => {
   const commands = useMemo(() => [
     { phrase: 'gmail', url: 'https://gmail.com' },
     { phrase: 'youtube', url: 'https://youtube-dupl.onrender.com/' },
-    { phrase: 'instagram', url: 'https://www.instagram.com/?next=https%3A%2F%2Fwww.instagram.com%2Fdirect%2Ft%2F17844984425941519%2F%3Fhl%3Den%26__coig_login%3D1' },
+    { phrase: 'instagram', url: 'instagram://app' },
+    { phrase: 'gram', url: 'https://www.instagram.com/?next=https%3A%2F%2Fwww.instagram.com%2Fdirect%2Ft%2F17844984425941519%2F%3Fhl%3Den%26__coig_login%3D1' },
     { phrase: 'facebook', url: 'https://www.facebook.com' },
     { phrase: 'portfolio', url: 'https://my-portfolio-1tju.onrender.com' },
     { phrase: 'linkedin', url: 'https://in.linkedin.com/in/sharique01' },
@@ -71,7 +72,7 @@ const VoiceAssistant = () => {
     SpeechRecognition.startListening({ continuous: true, language: 'en-US' }); // Added language option
 
     // Text-to-speech for welcome message
-    const speech = new SpeechSynthesisUtterance('Welcome Ahmad - Please speak...');
+    const speech = new SpeechSynthesisUtterance('Hey you there, Happy to see you back- Please speak...');
     window.speechSynthesis.speak(speech);
   };
 
