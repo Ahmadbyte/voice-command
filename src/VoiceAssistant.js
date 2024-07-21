@@ -13,7 +13,6 @@ const VoiceAssistant = () => {
     { phrase: 'gmail', url: 'https://gmail.com' },
     { phrase: 'youtube', url: 'https://youtube-dupl.onrender.com/' },
     { phrase: 'instagram', url: 'https://www.instagram.com' }, // Web URL fallback
-    { phrase: 'gram', url: 'https://www.instagram.com/?next=https%3A%2F%2Fwww.instagram.com%2Fdirect%2Ft%2F17844984425941519%2F%3Fhl%3Den%26__coig_login%3D1' },
     { phrase: 'facebook', url: 'https://www.facebook.com' },
     { phrase: 'portfolio', url: 'https://my-portfolio-1tju.onrender.com' },
     { phrase: 'linkedin', url: 'https://in.linkedin.com/in/sharique01' },
@@ -54,7 +53,7 @@ const VoiceAssistant = () => {
         window.open(webUrl, '_blank');
       }
     } else if (command.startsWith('contact')) {
-      const url = 'content://contacts/'; // Attempt to open contacts on Android
+    const url = 'intent://contacts/#Intent;action=android.intent.action.PICK;type=vnd.android.cursor.dir/contact;end';
       if (window.navigator.userAgent.match(/Android/)) {
         window.location.href = url;
       } else {
