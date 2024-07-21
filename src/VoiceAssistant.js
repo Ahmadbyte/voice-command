@@ -21,7 +21,7 @@ const VoiceAssistant = () => {
   const commands = useMemo(() => [
     { phrase: 'gmail', url: 'https://gmail.com' },
     { phrase: 'youtube', url: 'https://youtube-dupl.onrender.com/' },
-    { phrase: 'instagram', url: 'instagram://app' },
+    { phrase: 'instagram', url: 'https://www.instagram.com' },
     { phrase: 'gram', url: 'https://www.instagram.com/?next=https%3A%2F%2Fwww.instagram.com%2Fdirect%2Ft%2F17844984425941519%2F%3Fhl%3Den%26__coig_login%3D1' },
     { phrase: 'facebook', url: 'https://www.facebook.com' },
     { phrase: 'portfolio', url: 'https://my-portfolio-1tju.onrender.com' },
@@ -48,10 +48,31 @@ const VoiceAssistant = () => {
       } else {
         console.log('Name not found in contact list');
       }
+    } else if (command.startsWith('whatsapp')) {
+      const url = 'whatsapp://send?text=Hello%20World';
+      if (window.navigator.userAgent.match(/Android|iPhone|iPad|iPod/)) {
+        window.location.href = url;
+      } else {
+        // Fallback for desktops
+        window.open('https://web.whatsapp.com/send?text=Hello%20World', '_blank');
+      }
+    } else if (command.startsWith('instagram')) {
+      const url = 'instagram://app';
+      if (window.navigator.userAgent.match(/Android|iPhone|iPad|iPod/)) {
+        window.location.href = url;
+      } else {
+        // Fallback for desktops
+        window.open('https://www.instagram.com', '_blank');
+      }
     } else {
       const result = fuse.search(command);
       if (result.length > 0) {
-        window.open(result[0].item.url, '_blank');
+        const url = result[0].item.url;
+        if (url.startsWith('whatsapp://') || url.startsWith('instagram://')) {
+          window.location.href = url;
+        } else {
+          window.open(url, '_blank');
+        }
       } else {
         console.log('Command not recognized');
       }
@@ -69,10 +90,10 @@ const VoiceAssistant = () => {
 
   const startListening = () => {
     setIsListening(true);
-    SpeechRecognition.startListening({ continuous: true, language: 'en-US' }); // Added language option
+    SpeechRecognition.startListening({ continuous: true, language: 'en-US' });
 
     // Text-to-speech for welcome message
-    const speech = new SpeechSynthesisUtterance('Hey you there, Happy to see you back- Please speak...');
+    const speech = new SpeechSynthesisUtterance('Hey, Welcome Back - Please speak...');
     window.speechSynthesis.speak(speech);
   };
 
