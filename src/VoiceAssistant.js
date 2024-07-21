@@ -8,15 +8,6 @@ const VoiceAssistant = () => {
   const [isListening, setIsListening] = useState(false);
   const [lastCommand, setLastCommand] = useState('');
 
-  // Define a mapping of names to phone numbers
-  const contactList = useMemo(() => ({
-    safi: '7992217849',
-    ammi: '7903780528',
-    abbu: '8797068762',
-    fsl: '9123437796',
-    ksf: '9709921626'
-  }), []);
-
   // Define commands with URLs
   const commands = useMemo(() => [
     { phrase: 'gmail', url: 'https://gmail.com' },
@@ -39,16 +30,7 @@ const VoiceAssistant = () => {
   const handleCommand = useCallback((command) => {
     console.log('Command received:', command);
 
-    // Handle call command
-    if (command.startsWith(' safi ')) {
-      const name = command.slice(0).trim(); // Extract name after 'call '
-      const phoneNumber = contactList[name];
-      if (phoneNumber) {
-        window.location.href = `tel:${phoneNumber}`;
-      } else {
-        console.log('Name not found in contact list');
-      }
-    } else if (command.startsWith('whatsapp')) {
+    if (command.startsWith('whatsapp')) {
       const url = 'whatsapp://send?text=Hello%20World';
       if (window.navigator.userAgent.match(/Android|iPhone|iPad|iPod/)) {
         window.location.href = url;
@@ -71,6 +53,14 @@ const VoiceAssistant = () => {
         // Fallback for desktops
         window.open(webUrl, '_blank');
       }
+    } else if (command.startsWith('contact')) {
+      const url = 'content://contacts/'; // Attempt to open contacts on Android
+      if (window.navigator.userAgent.match(/Android/)) {
+        window.location.href = url;
+      } else {
+        // Fallback for other devices
+        console.log('Direct contact app access is not supported on this device.');
+      }
     } else {
       const result = fuse.search(command);
       if (result.length > 0) {
@@ -85,7 +75,7 @@ const VoiceAssistant = () => {
       }
     }
     resetTranscript();
-  }, [resetTranscript, fuse, contactList]);
+  }, [resetTranscript, fuse]);
 
   useEffect(() => {
     if (transcript) {
