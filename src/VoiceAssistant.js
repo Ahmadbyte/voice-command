@@ -21,7 +21,7 @@ const VoiceAssistant = () => {
   const commands = useMemo(() => [
     { phrase: 'gmail', url: 'https://gmail.com' },
     { phrase: 'youtube', url: 'https://youtube-dupl.onrender.com/' },
-    { phrase: 'instagram', url: 'https://www.instagram.com' },
+    { phrase: 'instagram', url: 'https://www.instagram.com' }, // Web URL fallback
     { phrase: 'gram', url: 'https://www.instagram.com/?next=https%3A%2F%2Fwww.instagram.com%2Fdirect%2Ft%2F17844984425941519%2F%3Fhl%3Den%26__coig_login%3D1' },
     { phrase: 'facebook', url: 'https://www.facebook.com' },
     { phrase: 'portfolio', url: 'https://my-portfolio-1tju.onrender.com' },
@@ -40,8 +40,8 @@ const VoiceAssistant = () => {
     console.log('Command received:', command);
 
     // Handle call command
-    if (command.startsWith('call ')) {
-      const name = command.slice(5).trim(); // Extract name after 'call '
+    if (command.startsWith(' safi ')) {
+      const name = command.slice(0).trim(); // Extract name after 'call '
       const phoneNumber = contactList[name];
       if (phoneNumber) {
         window.location.href = `tel:${phoneNumber}`;
@@ -58,11 +58,18 @@ const VoiceAssistant = () => {
       }
     } else if (command.startsWith('instagram')) {
       const url = 'instagram://app';
+      const webUrl = 'https://www.instagram.com';
       if (window.navigator.userAgent.match(/Android|iPhone|iPad|iPod/)) {
         window.location.href = url;
+        // Provide a slight delay to ensure URL scheme processing
+        setTimeout(() => {
+          if (document.visibilityState === 'visible') {
+            window.open(webUrl, '_blank');
+          }
+        }, 2000);
       } else {
         // Fallback for desktops
-        window.open('https://www.instagram.com', '_blank');
+        window.open(webUrl, '_blank');
       }
     } else {
       const result = fuse.search(command);
