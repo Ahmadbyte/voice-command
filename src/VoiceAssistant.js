@@ -53,7 +53,7 @@ const VoiceAssistant = () => {
         window.open(webUrl, '_blank');
       }
     } else if (command.startsWith('contact')) {
-    const url = 'intent://contacts/#Intent;action=android.intent.action.PICK;type=vnd.android.cursor.dir/contact;end';
+      const url = 'intent://contacts/#Intent;action=android.intent.action.PICK;type=vnd.android.cursor.dir/contact;end';
       if (window.navigator.userAgent.match(/Android/)) {
         window.location.href = url;
       } else {
@@ -89,7 +89,7 @@ const VoiceAssistant = () => {
     SpeechRecognition.startListening({ continuous: true, language: 'en-US' });
 
     // Text-to-speech for welcome message
-    const speech = new SpeechSynthesisUtterance('Hey, Welcome Back - Please speak...');
+    const speech = new SpeechSynthesisUtterance('Hello, how may I help you...');
     window.speechSynthesis.speak(speech);
   };
 
@@ -98,6 +98,23 @@ const VoiceAssistant = () => {
     SpeechRecognition.stopListening();
   };
 
+  // Handle visibility change
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible' && isListening) {
+        SpeechRecognition.startListening({ continuous: true, language: 'en-US' });
+      } else {
+        SpeechRecognition.stopListening();
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, [isListening]);
+
   if (!browserSupportsSpeechRecognition) {
     return <span>Browser doesn't support speech recognition.</span>;
   }
@@ -105,7 +122,7 @@ const VoiceAssistant = () => {
   return (
     <div className="voice-assistant-container">
       <div className="voice-assistant-heading">Voice Assistant</div>
-      <video src="/rbt.mp4" alt="3D Graphic" className="voice-assistant-image" />
+      <video src="/rbt.mp4" alt="3D Graphic" className="voice-assistant-image" controls />
       <button className={`voice-assistant-button ${isListening ? 'active' : ''}`} onClick={isListening ? stopListening : startListening}>
         {isListening ? 'Stop Voice Assistant' : 'Start Voice Assistant'}
       </button>
