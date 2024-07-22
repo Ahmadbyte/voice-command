@@ -105,7 +105,7 @@ const VoiceAssistant = () => {
   return (
     <div className="voice-assistant-container">
       <div className="voice-assistant-heading">Voice Assistant</div>
-      <img src="/vc.jpg" alt="3D Graphic" className="voice-assistant-image" />
+      <video src="/rbt.mp4" alt="3D Graphic" className="voice-assistant-image" />
       <button className={`voice-assistant-button ${isListening ? 'active' : ''}`} onClick={isListening ? stopListening : startListening}>
         {isListening ? 'Stop Voice Assistant' : 'Start Voice Assistant'}
       </button>
