@@ -122,7 +122,7 @@ const VoiceAssistant = () => {
   return (
     <div className="voice-assistant-container">
       <div className="voice-assistant-heading">Voice Assistant</div>
-      <video src="/rbt.mp4" alt="3D Graphic" className="voice-assistant-image" controls />
+      <video src="/rbt.mp4" alt="3D Graphic" className="voice-assistant-image" autoPlay muted loop />
       <button className={`voice-assistant-button ${isListening ? 'active' : ''}`} onClick={isListening ? stopListening : startListening}>
         {isListening ? 'Stop Voice Assistant' : 'Start Voice Assistant'}
       </button>
